@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haveli Darbar - Authentic Indian Dhaba | Secunderabad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0D0A07; --card: #1A1410; --gold: #C8860A;
+            --red: #8B1A1A; --text: #F5ECD7; --muted: #A89070;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; }
+        nav.scrolled { background: var(--bg); border-bottom: 1px solid rgba(200,134,10,0.15); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--text); text-decoration: none; }
+        .logo span { color: var(--gold); }
+        .nav-links { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-cta { background: var(--gold); color: var(--bg) !important; padding: 0.6rem 1.5rem; border-radius: 50px; font-weight: 600 !important; transition: all 0.3s !important; }
+        .nav-cta:hover { box-shadow: 0 0 20px rgba(200,134,10,0.5); transform: translateY(-2px); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .hamburger span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; display: block; }
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 999; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text); text-decoration: none; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2rem; cursor: pointer; color: var(--text); }
+
+        /* HERO */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 2rem; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(13,10,7,0.7), rgba(13,10,7,0.88)), url('https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?auto=format&fit=crop&w=2000&q=80') center/cover; background-attachment: fixed; z-index: -1; }
+        .hero-badge { background: rgba(200,134,10,0.15); border: 1px solid rgba(200,134,10,0.4); color: var(--gold); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; font-weight: 500; margin-bottom: 2rem; display: inline-block; animation: glow 2s ease-in-out infinite; }
+        @keyframes glow { 0%,100%{box-shadow:0 0 10px rgba(200,134,10,0.2)} 50%{box-shadow:0 0 25px rgba(200,134,10,0.5)} }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 9vw, 7rem); font-weight: 400; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero h1 em { color: var(--gold); font-style: italic; }
+        .hero p { font-size: clamp(1rem, 3vw, 1.4rem); max-width: 580px; opacity: 0.85; margin-bottom: 3rem; }
+        .hero-btns { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+        .btn-primary { background: var(--gold); color: var(--bg); padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.05rem; transition: all 0.3s; box-shadow: 0 8px 25px rgba(200,134,10,0.4); }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(200,134,10,0.5); }
+        .btn-ghost { background: transparent; color: var(--text); border: 2px solid rgba(200,134,10,0.4); padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.05rem; transition: all 0.3s; }
+        .btn-ghost:hover { border-color: var(--gold); background: rgba(200,134,10,0.1); transform: translateY(-4px); }
+
+        /* STATS BAR */
+        .stats { background: var(--card); padding: 1.5rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; border-top: 1px solid rgba(200,134,10,0.1); border-bottom: 1px solid rgba(200,134,10,0.1); }
+        .stat { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 500; }
+
+        /* MARQUEE */
+        .marquee-wrap { background: var(--bg); padding: 1.5rem 0; overflow: hidden; border-bottom: 1px solid rgba(200,134,10,0.08); }
+        .marquee-track { display: flex; gap: 3rem; animation: slide 22s linear infinite; width: max-content; }
+        .marquee-track span { color: var(--gold); font-weight: 500; font-size: 1rem; white-space: nowrap; }
+        @keyframes slide { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+    <a href="#" class="logo">HAVELI <span>DARBAR</span></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Find Us</a></li>
+        <li><a href="https://wa.me/919587689689" class="nav-cta">Order Now</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <span class="close-btn" id="closeMenu">✕</span>
+    <a href="#menu" onclick="closeMobile()">Menu</a>
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#reviews" onclick="closeMobile()">Reviews</a>
+    <a href="#contact" onclick="closeMobile()">Find Us</a>
+    <a href="https://wa.me/919587689689" style="color:var(--gold)">📦 Order Now</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">🕐 Open Until Midnight · Every Day</div>
+    <h1>Where Every Meal<br>Feels Like a <em>Celebration.</em></h1>
+    <p>Authentic desi flavors, bold biryanis & sizzling grills — right in the heart of Secunderabad.</p>
+    <div class="hero-btns">
+        <a href="#menu" class="btn-primary">🍽️ View Full Menu</a>
+        <a href="https://www.swiggy.com" target="_blank" class="btn-ghost">📦 Order Online</a>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="stat">⭐ 775+ Reviews</div>
+    <div class="stat">🕐 Open Till Midnight</div>
+    <div class="stat">💰 ₹200–₹400 / person</div>
+    <div class="stat">👨‍👩‍👧 Group Dining Available</div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+    <div class="marquee-track">
+        <span>🔥 Biryani you can't stop at one plate</span>
+        <span>✦ Shawarma that hits different</span>
+        <span>✦ Family meals, unbeatable value</span>
+        <span>✦ Open late, flavor always fresh</span>
+        <span>✦ The dhaba Secunderabad swears by</span>
+        <span>🔥 Biryani you can't stop at one plate</span>
+        <span>✦ Shawarma that hits different</span>
+        <span>✦ Family meals, unbeatable value</span>
+        <span>✦ Open late, flavor always fresh</span>
+        <span>✦ The dhaba Secunderabad swears by</span>
+    </div>
+</div>
+!-- MENU SECTION -->
+<section id="menu" style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto;">
+    <style>
+        .section-label { text-align: center; color: var(--gold); font-size: 0.9rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 4rem); text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--text), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .divider { text-align: center; color: var(--gold); opacity: 0.5; font-size: 1.2rem; margin: 0.8rem 0 1.5rem; letter-spacing: 8px; }
+        .section-sub { text-align: center; max-width: 560px; margin: 0 auto 3.5rem; opacity: 0.75; font-size: 1.05rem; line-height: 1.7; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .menu-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(200,134,10,0.15); border-radius: 18px; padding: 1.8rem; position: relative; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); overflow: hidden; cursor: default; }
+        .menu-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,134,10,0.05), transparent); opacity: 0; transition: opacity 0.4s; border-radius: 18px; }
+        .menu-card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 20px 50px rgba(200,134,10,0.15); }
+        .menu-card:hover::after { opacity: 1; }
+        .menu-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--red)); transform: scaleX(0); transition: transform 0.4s ease; border-radius: 18px 18px 0 0; }
+        .menu-card:hover::before { transform: scaleX(1); }
+        .popular-tag { position: absolute; top: 1.2rem; right: 1.2rem; background: var(--gold); color: var(--bg); padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; }
+        .dish-emoji { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
+        .dish-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); }
+        .dish-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+        .menu-cta { text-align: center; }
+    </style>
+
+    <p class="section-label">Our Specialties</p>
+    <h2 class="section-title">Most-Loved Dishes</h2>
+    <div class="divider">✦ ─── ✦</div>
+    <p class="section-sub">From slow-cooked biryanis to crispy grills — there's something for every craving.</p>
+
+    <div class="menu-grid">
+        <div class="menu-card">
+            <span class="popular-tag">🔥 Popular</span>
+            <span class="dish-emoji">🍛</span>
+            <div class="dish-name">Mutton Biryani</div>
+            <div class="dish-desc">Slow dum-cooked, aromatic spices, tender mutton — the dish people come back for again and again.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🍗</span>
+            <div class="dish-name">Chicken Biryani</div>
+            <div class="dish-desc">Juicy chicken, fragrant basmati rice, cooked to perfection. A Hyderabadi classic done right.</div>
+        </div>
+        <div class="menu-card">
+            <span class="popular-tag">🔥 Popular</span>
+            <span class="dish-emoji">🌯</span>
+            <div class="dish-name">Shawarma</div>
+            <div class="dish-desc">Crispy, spiced, wrapped just right. The crowd's midnight snack of choice — always fresh.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🥘</span>
+            <div class="dish-name">Chicken Manchurian</div>
+            <div class="dish-desc">Bold Indo-Chinese flavors with a saucy, spicy punch that keeps you reaching for more.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🍳</span>
+            <div class="dish-name">Hong Kong Chicken</div>
+            <div class="dish-desc">Crispy fried chicken tossed in a fiery Hong Kong-style glaze. Addictive from first bite.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🧀</span>
+            <div class="dish-name">Paneer Majestic</div>
+            <div class="dish-desc">Golden paneer cubes in a tangy, spiced masala — a vegetarian showstopper worth every bite.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🌶️</span>
+            <div class="dish-name">Paneer Chatpata</div>
+            <div class="dish-desc">Zingy, chatpata-marinated paneer with bold spices and herbs. Flavor that hits instantly.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🫕</span>
+            <div class="dish-name">Kadhai Paneer</div>
+            <div class="dish-desc">Rich, rustic, cooked in a traditional kadhai with whole spices. Comfort food at its finest.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🫓</span>
+            <div class="dish-name">Garlic Naan</div>
+            <div class="dish-desc">Soft, buttery, freshly baked. The perfect companion to every curry on the table.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🍲</span>
+            <div class="dish-name">Chicken Curry</div>
+            <div class="dish-desc">Home-style comfort chicken curry, slow-simmered with love and the right blend of spices.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🥗</span>
+            <div class="dish-name">Curry Raita Salad</div>
+            <div class="dish-desc">Cool, refreshing raita to balance the heat — a must-have side for every heavy meal.</div>
+        </div>
+        <div class="menu-card">
+            <span class="dish-emoji">🫧</span>
+            <div class="dish-name">Goli Soda</div>
+            <div class="dish-desc">The classic fizzy nostalgia drink — because every great meal deserves a perfect finish.</div>
+        </div>
+    </div>
+
+    <div class="menu-cta">
+        <a href="https://wa.me/919587689689" class="btn-primary">📋 Ask for Full Menu on WhatsApp</a>
+    </div>
+</section>
+
+<!-- ALL YOU CAN EAT -->
+<section id="about" style="background: var(--card); padding: 6rem 2rem; position: relative; overflow: hidden;">
+    <style>
+        .aye-wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+        .aye-wrap::before { content: ''; position: absolute; left: -10%; top: 0; bottom: 0; width: 55%; background: linear-gradient(180deg, rgba(200,134,10,0.08), rgba(139,26,26,0.05)); border-radius: 0 100px 100px 0; z-index: 0; }
+        .aye-text { position: relative; z-index: 1; }
+        .aye-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        .aye-text h2 em { color: var(--gold); font-style: italic; }
+        .aye-text p { font-size: 1.1rem; opacity: 0.8; line-height: 1.8; margin-bottom: 2rem; }
+        .aye-emoji { font-size: clamp(6rem, 12vw, 10rem); text-align: center; animation: float 5s ease-in-out infinite; opacity: 0.15; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+
+        @media(max-width: 768px) {
+            .aye-wrap { grid-template-columns: 1fr; text-align: center; }
+            .aye-emoji { display: none; }
+        }
+    </style>
+
+    <div class="aye-wrap">
+        <div class="aye-text">
+            <p class="section-label" style="text-align:left">The Haveli Experience</p>
+            <h2>Eat More.<br><em>Pay Less.</em></h2>
+            <p>Haveli Darbar offers All-You-Can-Eat options perfect for families, celebrations, and groups who come hungry and leave absolutely happy. Bold flavors, generous portions, prices that never hurt the pocket.</p>
+            <a href="https://wa.me/919587689689" target="_blank" class="btn-primary">💬 Reserve via WhatsApp</a>
+        </div>
+        <div class="aye-emoji">🍛</div>
+    </div>
+    <!-- REVIEWS SECTION -->
+<section id="reviews" style="padding: 6rem 2rem;">
+    <style>
+        .reviews-wrap { max-width: 1200px; margin: 0 auto; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; margin-top: 3.5rem; }
+        .review-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(200,134,10,0.15); border-radius: 20px; padding: 2.2rem; position: relative; transition: all 0.3s ease; }
+        .review-card:hover { border-color: rgba(200,134,10,0.4); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .quote-mark { font-family: 'Playfair Display', serif; font-size: 5rem; color: var(--gold); opacity: 0.2; line-height: 0.5; display: block; margin-bottom: 1rem; }
+        .stars { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; letter-spacing: 2px; }
+        .review-text { font-style: italic; font-size: 1.05rem; line-height: 1.75; color: var(--text); opacity: 0.9; margin-bottom: 1.5rem; }
+        .reviewer-name { font-weight: 600; color: var(--gold); font-size: 0.95rem; }
+        .reviewer-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+        .rating-summary { max-width: 1200px; margin: 3rem auto 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(200,134,10,0.15); border-radius: 20px; padding: 2rem; text-align: center; }
+        .rating-big { font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--gold); font-weight: 700; }
+        .rating-stars { font-size: 1.8rem; color: var(--gold); letter-spacing: 4px; margin: 0.5rem 0; }
+        .rating-count { color: var(--muted); font-size: 1rem; }
+    </style>
+
+    <div class="reviews-wrap">
+        <p class="section-label">What People Say</p>
+        <h2 class="section-title">Guest Reviews</h2>
+        <div class="divider">✦ ─── ✦</div>
+        <p class="section-sub">Hundreds of happy diners. Real experiences. Real flavors.</p>
+
+        <div class="reviews-grid">
+            <div class="review-card">
+                <span class="quote-mark">"</span>
+                <div class="stars">★★★★★</div>
+                <p class="review-text">The food is absolutely worth every rupee. The biryani and shawarma are unmatched in this area. Portions are generous and the vibe is great for families. Definitely coming back!</p>
+                <div class="reviewer-name">Rahul M.</div>
+                <div class="reviewer-label">Verified Diner · Secunderabad</div>
+            </div>
+            <div class="review-card">
+                <span class="quote-mark">"</span>
+                <div class="stars">★★★★★</div>
+                <p class="review-text">Great family dining experience. The Mutton Biryani is slow-cooked to perfection and the Paneer Majestic is a must-try. Prices are very reasonable — came as a group of 8 and everyone loved it.</p>
+                <div class="reviewer-name">Priya S.</div>
+                <div class="reviewer-label">Verified Diner · Alwal</div>
+            </div>
+            <div class="review-card">
+                <span class="quote-mark">"</span>
+                <div class="stars">★★★★☆</div>
+                <p class="review-text">Late night cravings completely sorted! Open till midnight and the food never disappoints. The Chicken Manchurian and Shawarma are absolutely fire. My go-to spot now.</p>
+                <div class="reviewer-name">Aditya K.</div>
+                <div class="reviewer-label">Verified Diner · Tirumalagiri</div>
+            </div>
+        </div>
+
+        <div class="rating-summary">
+            <div class="rating-big">3.8</div>
+            <div class="rating-stars">★★★★☆</div>
+            <div class="rating-count">Based on 775+ Google Reviews · Secunderabad's Favourite Dhaba</div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT / 
